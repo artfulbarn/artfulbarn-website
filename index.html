@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Artful Barn — Where Creativity Lives</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--cream:#f8f3ec;--warm:#f0e8db;--teal:#0e7fa8;--teal-dk:#0d5f80;--gold:#e89a1e;--gold-dk:#c07e10;--navy:#0d2b4e;--navy-lt:#143d66;--char:#2a2a2a;--mid:#6b6b6b;--lite:#aaa;--bdr:rgba(0,0,0,0.08);--shadow:0 4px 32px rgba(0,0,0,0.1);--shadow-lg:0 8px 48px rgba(0,0,0,0.15);}
+html{scroll-behavior:smooth;}
+body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--char);overflow-x:hidden;}
+img{display:block;max-width:100%;}
+a{text-decoration:none;color:inherit;}
+.nav{position:sticky;top:0;z-index:200;background:rgba(248,243,236,0.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--bdr);transition:box-shadow .3s;}
+.nav.scrolled{box-shadow:0 2px 20px rgba(0,0,0,0.08);}
+.nav-inner{max-width:1300px;margin:0 auto;padding:0 40px;height:68px;display:flex;align-items:center;justify-content:space-between;gap:24px;}
+.nav-links{display:flex;gap:2px;list-style:none;}
+.nav-links a{font-size:11.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 13px;color:var(--char);border-radius:2px;transition:color .2s,background .2s;}
+.nav-links a:hover{color:var(--teal);background:rgba(14,127,168,0.07);}
+.nav-links a.nav-active{color:var(--teal);}
+.nav-cta{background:var(--navy)!important;color:#fff!important;border-radius:2px!important;}
+.nav-cta:hover{background:var(--teal)!important;color:#fff!important;}
+.hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;width:40px;height:40px;background:none;border:none;cursor:pointer;padding:6px;border-radius:2px;transition:background .2s;flex-shrink:0;}
+.hamburger:hover{background:rgba(14,127,168,0.08);}
+.hamburger span{display:block;width:100%;height:2px;background:var(--char);border-radius:2px;transition:transform .3s,opacity .3s,width .3s;transform-origin:center;}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;width:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.mobile-menu{display:none;position:fixed;top:68px;left:0;right:0;background:rgba(248,243,236,0.99);backdrop-filter:blur(16px);border-bottom:1px solid var(--bdr);z-index:199;transform:translateY(-8px);opacity:0;pointer-events:none;transition:transform .3s,opacity .3s;box-shadow:0 8px 30px rgba(0,0,0,0.12);}
+.mobile-menu.open{transform:translateY(0);opacity:1;pointer-events:all;}
+.mobile-menu ul{list-style:none;padding:8px 0 12px;}
+.mobile-menu ul li a{display:block;padding:13px 28px;font-size:13px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--char);border-bottom:1px solid rgba(0,0,0,0.04);transition:background .15s,color .15s;}
+.mobile-menu ul li:last-child a{border-bottom:none;}
+.mobile-menu ul li a:hover{background:rgba(14,127,168,0.06);color:var(--teal);}
+.mobile-menu ul li a.nav-cta{margin:10px 20px 0;border-bottom:none!important;text-align:center;background:var(--navy)!important;color:#fff!important;border-radius:2px!important;padding:12px 20px!important;}
+.menu-overlay{display:none;position:fixed;inset:0;top:68px;background:rgba(0,0,0,0.3);z-index:198;opacity:0;transition:opacity .3s;pointer-events:none;}
+.menu-overlay.open{opacity:1;pointer-events:all;}
+.hero{background:linear-gradient(160deg,#0a1e35 0%,var(--navy) 50%,#0e3a5a 100%);padding:100px 40px 90px;text-align:center;position:relative;overflow:hidden;min-height:480px;display:flex;align-items:center;justify-content:center;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 60% 40%,rgba(14,127,168,0.25) 0%,transparent 60%),radial-gradient(ellipse at 20% 80%,rgba(232,154,30,0.1) 0%,transparent 50%);}
+.hero-content{position:relative;z-index:1;max-width:800px;}
+.hero-logo{height:110px;width:auto;margin:0 auto 28px;mix-blend-mode:screen;filter:brightness(1.15) saturate(1.1);}
+.hero-tagline{font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;font-size:clamp(32px,4.5vw,58px);line-height:1.1;color:#fff;margin-bottom:16px;letter-spacing:0.02em;}
+.hero-tagline em{color:var(--gold);font-style:normal;}
+.hero-sub{font-size:15px;font-weight:300;color:rgba(255,255,255,0.6);max-width:480px;margin:0 auto 36px;line-height:1.8;letter-spacing:0.04em;}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn-gold{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--navy);font-family:'Jost',sans-serif;font-weight:700;font-size:11.5px;letter-spacing:0.16em;text-transform:uppercase;padding:14px 28px;border-radius:2px;border:none;cursor:pointer;transition:background .2s,transform .2s;}
+.btn-gold:hover{background:var(--gold-dk);transform:translateY(-1px);}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;background:transparent;color:#fff;font-family:'Jost',sans-serif;font-weight:600;font-size:11.5px;letter-spacing:0.16em;text-transform:uppercase;padding:13px 28px;border-radius:2px;border:1px solid rgba(255,255,255,0.35);cursor:pointer;transition:border-color .2s,background .2s;}
+.btn-outline:hover{border-color:#fff;background:rgba(255,255,255,0.08);}
+.section{padding:90px 0 60px;}
+.section.alt{background:#fff;}
+.section.dark{background:var(--navy);}
+.sec-inner{max-width:1300px;margin:0 auto;padding:0 40px;}
+.sec-label{font-size:10.5px;font-weight:700;letter-spacing:0.35em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;display:block;}
+.sec-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(30px,3.5vw,50px);color:var(--navy);line-height:1.1;margin-bottom:14px;}
+.sec-title.light{color:#fff;}
+.sec-title em{font-style:italic;color:var(--gold);}
+.sec-desc{font-size:15.5px;font-weight:300;color:var(--mid);line-height:1.8;max-width:600px;margin-bottom:48px;}
+.sec-header-row{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:48px;padding-bottom:20px;border-bottom:1px solid var(--bdr);}
+.sec-header-row .sec-title{margin-bottom:4px;}
+.sec-header-row .sec-desc{margin-bottom:0;font-size:14px;}
+.scene-card{margin-bottom:24px;border-radius:3px;overflow:hidden;box-shadow:var(--shadow);}
+.scene-wrap{line-height:0;background:#f0ebe3;}
+.room-photo{width:100%;display:block;object-fit:contain;}
+.scene-caption{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;background:#fff;border-top:3px solid var(--gold);}
+.cap-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:16px;color:var(--navy);margin-bottom:2px;}
+.cap-sub{font-size:11.5px;color:var(--lite);letter-spacing:0.04em;}
+.cap-tag{font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--teal);background:rgba(14,127,168,0.08);padding:4px 11px;border-radius:2px;white-space:nowrap;flex-shrink:0;margin-left:14px;}
+.two-up{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;}
+.two-up .scene-card{margin-bottom:0;}
+.three-up{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-bottom:24px;}
+.three-up .scene-card{margin-bottom:0;}
+.room-heading{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:22px;color:var(--navy);display:flex;align-items:center;gap:14px;margin:40px 0 20px;}
+.room-heading::before{content:'';display:block;width:20px;height:1.5px;background:var(--gold);flex-shrink:0;}
+.mosaic{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;}
+.mosaic-item{position:relative;overflow:hidden;cursor:pointer;aspect-ratio:3/4;background:#111;}
+.mosaic-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s;}
+.mosaic-item:hover img{transform:scale(1.06);}
+.mosaic-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(13,43,78,0.88) 0%,transparent 50%);opacity:0;transition:opacity .3s;display:flex;align-items:flex-end;padding:16px 12px;}
+.mosaic-item:hover .mosaic-overlay{opacity:1;}
+.mosaic-txt{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12.5px;color:#fff;line-height:1.4;}
+.art-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:0;}
+.art-card{position:relative;overflow:hidden;cursor:default;aspect-ratio:3/4;}
+.art-card-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .6s;}
+.art-card:hover .art-card-bg{transform:scale(1.04);}
+.art-card-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(13,43,78,0.88) 0%,rgba(13,43,78,0.2) 60%,transparent 100%);}
+.art-card-body{position:absolute;bottom:0;left:0;right:0;padding:28px 24px;}
+.art-card-icon{font-size:28px;margin-bottom:10px;display:block;}
+.art-card-label{font-size:9.5px;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.art-card-title{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:22px;color:#fff;margin-bottom:8px;line-height:1.2;}
+.art-card-desc{font-size:13px;font-weight:300;color:rgba(255,255,255,0.7);line-height:1.65;}
+.art-abstract{background:linear-gradient(135deg,#1a1a2e 0%,#2d1b4e 40%,#0e3a5a 100%);}
+.art-metal{background:linear-gradient(135deg,#1a120a 0%,#3a2510 40%,#5a3a18 100%);}
+.art-gond{background:linear-gradient(135deg,#0a2010 0%,#1a4020 40%,#0e4f6e 100%);}
+.art-madhubani{background:linear-gradient(135deg,#2a0a1a 0%,#4a1830 50%,#8a2040 100%);}
+.art-warli{background:linear-gradient(135deg,#181008 0%,#3a2510 50%,#6a4518 100%);}
+.art-kalighat{background:linear-gradient(135deg,#0a0a20 0%,#1a1840 50%,#2a306a 100%);}
+.events-grid{display:flex;flex-direction:column;gap:1px;background:var(--bdr);}
+.event-card{background:#fff;display:grid;grid-template-columns:120px 1fr auto;align-items:center;gap:0;transition:background .2s;cursor:default;}
+.event-card:hover{background:var(--cream);}
+.event-date-block{padding:28px 24px;border-right:1px solid var(--bdr);text-align:center;}
+.event-month{font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--teal);}
+.event-day{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:var(--navy);line-height:1;}
+.event-year{font-size:10px;color:var(--lite);letter-spacing:0.1em;}
+.event-body{padding:24px 32px;}
+.event-type-tag{font-size:9.5px;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;display:block;}
+.event-name{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:22px;color:var(--navy);margin-bottom:6px;line-height:1.2;}
+.event-detail{font-size:13px;color:var(--mid);line-height:1.6;}
+.event-detail strong{color:var(--char);font-weight:600;}
+.event-action{padding:24px 32px;}
+.btn-sm{display:inline-flex;align-items:center;gap:7px;background:var(--navy);color:#fff;font-family:'Jost',sans-serif;font-weight:600;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;padding:10px 20px;border-radius:2px;border:none;cursor:pointer;white-space:nowrap;transition:background .2s;}
+.btn-sm:hover{background:var(--teal);}
+.btn-sm-outline{background:transparent;color:var(--navy);border:1px solid var(--navy);}
+.btn-sm-outline:hover{background:var(--navy);color:#fff;}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+.about-img-cell{position:relative;overflow:hidden;aspect-ratio:4/3;}
+.about-img-cell img{width:100%;height:100%;object-fit:cover;transition:transform .6s;}
+.about-img-cell:hover img{transform:scale(1.04);}
+.about-img-label{position:absolute;bottom:0;left:0;right:0;padding:16px 20px;background:linear-gradient(0deg,rgba(13,43,78,0.75),transparent);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:#fff;}
+.about-text{background:var(--navy);padding:56px 52px;display:flex;flex-direction:column;justify-content:center;}
+.about-text .sec-label{color:var(--gold);}
+.about-text .sec-title{color:#fff;margin-bottom:20px;}
+.about-text p{font-size:15px;font-weight:300;color:rgba(255,255,255,0.65);line-height:1.85;margin-bottom:16px;}
+.about-text p:last-child{margin-bottom:0;}
+.team-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:48px;}
+.team-card{text-align:center;}
+.team-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--gold));display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:30px;box-shadow:0 4px 20px rgba(14,127,168,0.3);}
+.team-name{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:18px;color:var(--navy);margin-bottom:4px;}
+.team-role{font-size:11.5px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--teal);}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
+.contact-info-item{display:flex;align-items:flex-start;gap:16px;padding:20px 0;border-bottom:1px solid var(--bdr);}
+.contact-info-item:last-child{border-bottom:none;}
+.contact-icon{width:42px;height:42px;border-radius:50%;background:rgba(14,127,168,0.1);border:1px solid rgba(14,127,168,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--teal);}
+.contact-label{font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--lite);margin-bottom:4px;}
+.contact-value{font-size:15px;color:var(--char);font-weight:400;line-height:1.5;}
+.contact-value a{color:var(--teal);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:10.5px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--mid);margin-bottom:7px;}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:12px 16px;border:1px solid rgba(0,0,0,0.12);border-radius:2px;font-family:'Jost',sans-serif;font-size:14px;color:var(--char);background:#fff;outline:none;transition:border-color .2s;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(14,127,168,0.1);}
+.form-group textarea{resize:vertical;min-height:100px;}
+.lb{position:fixed;inset:0;z-index:999;background:rgba(6,12,20,0.96);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
+.lb.open{opacity:1;pointer-events:all;}
+.lb-inner{max-width:88vw;max-height:90vh;}
+.lb-img{max-height:80vh;max-width:82vw;display:block;border-radius:2px;box-shadow:0 8px 60px rgba(0,0,0,0.6);}
+.lb-cap{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:rgba(255,255,255,0.75);text-align:center;margin-top:14px;}
+.lb-sub{font-size:11px;letter-spacing:0.14em;color:rgba(255,255,255,0.35);text-align:center;margin-top:5px;}
+.lb-x{position:fixed;top:18px;right:22px;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);color:rgba(255,255,255,0.7);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.lb-x:hover{background:rgba(255,255,255,0.18);}
+.lb-arr{position:fixed;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.lb-arr:hover{background:rgba(255,255,255,0.18);}
+#lbPrev{left:16px;}#lbNext{right:16px;}
+.site-footer{background:#07111e;color:rgba(255,255,255,0.4);padding:48px 40px 32px;}
+.footer-inner{max-width:1300px;margin:0 auto;}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:28px;}
+.footer-logo img{height:44px;filter:brightness(10);opacity:0.7;margin-bottom:16px;}
+.footer-about{font-size:13.5px;line-height:1.8;max-width:280px;margin-bottom:20px;}
+.footer-col h5{font-size:10.5px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.8);margin-bottom:16px;}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.footer-col li a{font-size:13.5px;transition:color .2s;}
+.footer-col li a:hover{color:var(--gold);}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;font-size:12px;}
+.footer-bottom a{color:rgba(255,255,255,0.4);transition:color .2s;}
+.footer-bottom a:hover{color:var(--gold);}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease;}
+.reveal.vis{opacity:1;transform:translateY(0);}
+@media(max-width:1024px){.art-grid{grid-template-columns:1fr 1fr;}.about-grid{grid-template-columns:1fr;}.contact-grid{grid-template-columns:1fr;}}
+@media(max-width:900px){.three-up{grid-template-columns:1fr 1fr;}.team-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:768px){
+  .nav-inner{padding:0 20px;}.nav-links{display:none;}.hamburger{display:flex;}
+  .mobile-menu{display:block;}.menu-overlay{display:block;}
+  .hero{padding:72px 24px 64px;}.sec-inner{padding:0 20px;}
+  .two-up,.three-up{grid-template-columns:1fr;}
+  .mosaic{grid-template-columns:repeat(3,1fr);}
+  .art-grid{grid-template-columns:1fr 1fr;}
+  .event-card{grid-template-columns:90px 1fr;}.event-action{display:none;}
+  .footer-top{grid-template-columns:1fr;}
+  .footer-bottom{flex-direction:column;gap:10px;text-align:center;}
+  .form-row{grid-template-columns:1fr;}
+  .scene-caption{flex-direction:column;align-items:flex-start;gap:8px;}.cap-tag{margin-left:0;}
+}
+@media(max-width:480px){
+  .mosaic{grid-template-columns:repeat(2,1fr);}.art-grid{grid-template-columns:1fr;}
+  .hero-logo{height:80px;}.hero-tagline{font-size:28px;}
+  .event-card{grid-template-columns:1fr;}.event-date-block{border-right:none;border-bottom:1px solid var(--bdr);text-align:left;padding:16px 20px;display:flex;align-items:center;gap:12px;}
+  .team-grid{grid-template-columns:1fr;}
+}
+
+.art-guide-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;}
+.art-guide-card{
+  border-radius:4px;
+  overflow:hidden;
+  background:#faf6f0;
+  transition:transform .3s,box-shadow .3s;
+  border:1px solid #d4b87a;
+  box-shadow:0 0 0 4px #faf6f0, 0 0 0 6px #d4b87a, 0 0 0 10px #faf6f0, 0 0 0 11px rgba(212,184,122,0.4), 6px 12px 40px rgba(0,0,0,0.12);
+  position:relative;
+}
+.art-guide-card::before{
+  content:'';
+  position:absolute;
+  inset:8px;
+  border:1px solid rgba(232,154,30,0.35);
+  border-radius:2px;
+  pointer-events:none;
+  z-index:1;
+}
+.art-guide-card:hover{transform:translateY(-5px);box-shadow:0 0 0 4px #faf6f0, 0 0 0 6px #c8a030, 0 0 0 10px #faf6f0, 0 0 0 11px rgba(200,160,48,0.5), 8px 20px 56px rgba(0,0,0,0.16);}
+.art-guide-img-wrap{line-height:0;padding:12px;}
+.art-guide-img-wrap img{width:100%;display:block;object-fit:contain;border-radius:2px;}
+@media(max-width:768px){.art-guide-grid{grid-template-columns:1fr;}}
+
+.nav-logo img{height:48px;width:auto;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav" id="mainNav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#hero"><img src="img/logo.png" alt="Artful Barn"></a>
+    <nav><ul class="nav-links">
+      <li><a href="#events">Events</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#inspired-homes">Inspired Homes</a></li>
+      <li><a href="#art-guide">Art Guide</a></li>
+      <li><a href="#about">About Us</a></li>
+      <li><a href="#contact" class="nav-cta">Contact Us</a></li>
+    </ul></nav>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="#events">Events</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#inspired-homes">Inspired Homes</a></li>
+    <li><a href="#art-guide">Art Guide</a></li>
+    <li><a href="#about">About Us</a></li>
+    <li><a href="#contact" class="nav-cta">Contact Us</a></li>
+  </ul>
+</div>
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <img class="hero-logo" src="img/logo.png" alt="Artful Barn">
+    <h1 class="hero-tagline">Where <em>Art</em> Finds<br>Its Home</h1>
+    <p class="hero-sub">A gallery, studio &amp; peacock sanctuary in Springboro, Ohio — celebrating folk, tribal &amp; contemporary art from around the world.</p>
+    <div class="hero-btns">
+      <a href="#gallery" class="btn-gold">Explore the Gallery &rarr;</a>
+      <a href="#events" class="btn-outline">Upcoming Events</a>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section class="section alt" id="events">
+<div class="sec-inner">
+  <span class="sec-label">What's On</span>
+  <h2 class="sec-title">Classes &amp; <em>Events</em></h2>
+  <p class="sec-desc">Hands-on painting workshops, artist talks, and gallery openings — all set in our one-of-a-kind barn studio.</p>
+  <div class="events-grid reveal">
+    <div class="event-card">
+      <div class="event-date-block"><div class="event-month">Jun</div><div class="event-day">6</div><div class="event-year">2026</div></div>
+      <div class="event-body"><span class="event-type-tag">Outdoor Workshop</span><div class="event-name">Brush Before the Brain</div><div class="event-detail"><strong>Inspired by Mike Elsass · Led by Darren Harper</strong><br>10:00 AM – 12:30 PM &nbsp;·&nbsp; $125 per person &nbsp;·&nbsp; Max 20 &nbsp;·&nbsp; RSVP by May 30</div></div>
+      <div class="event-action"><a href="#contact" class="btn-sm">Register &rarr;</a></div>
+    </div>
+    <div class="event-card">
+      <div class="event-date-block"><div class="event-month">Jul</div><div class="event-day">12</div><div class="event-year">2026</div></div>
+      <div class="event-body"><span class="event-type-tag">Indoor Workshop</span><div class="event-name">Watercolour Afternoon</div><div class="event-detail"><strong>Led by Sarah Whitmore</strong><br>2:00 PM – 5:00 PM &nbsp;·&nbsp; Artful Barn Studio &nbsp;·&nbsp; All levels welcome</div></div>
+      <div class="event-action"><a href="#contact" class="btn-sm">Register &rarr;</a></div>
+    </div>
+    <div class="event-card">
+      <div class="event-date-block"><div class="event-month">Aug</div><div class="event-day">2</div><div class="event-year">2026</div></div>
+      <div class="event-body"><span class="event-type-tag">Full-Day Workshop</span><div class="event-name">Folk Art Deep Dive</div><div class="event-detail"><strong>Guest artist TBA</strong><br>10:00 AM – 4:00 PM &nbsp;·&nbsp; Barn &amp; Grounds &nbsp;·&nbsp; Lunch included</div></div>
+      <div class="event-action"><a href="#contact" class="btn-sm">Register &rarr;</a></div>
+    </div>
+    <div class="event-card">
+      <div class="event-date-block"><div class="event-month">Sep</div><div class="event-day">20</div><div class="event-year">2026</div></div>
+      <div class="event-body"><span class="event-type-tag">Gallery Opening</span><div class="event-name">Autumn Gallery Show</div><div class="event-detail"><strong>All Artists · Opening Night</strong><br>6:00 PM – 9:00 PM &nbsp;·&nbsp; Public event &nbsp;·&nbsp; Free entry</div></div>
+      <div class="event-action"><a href="#contact" class="btn-sm btn-sm-outline">RSVP &rarr;</a></div>
+    </div>
+    <div class="event-card">
+      <div class="event-date-block"><div class="event-month">Oct</div><div class="event-day">11</div><div class="event-year">2026</div></div>
+      <div class="event-body"><span class="event-type-tag">Workshop</span><div class="event-name">Introduction to Gond Painting</div><div class="event-detail"><strong>Led by Artful Barn team</strong><br>10:00 AM – 1:00 PM &nbsp;·&nbsp; $95 per person &nbsp;·&nbsp; All materials provided</div></div>
+      <div class="event-action"><a href="#contact" class="btn-sm">Register &rarr;</a></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- GALLERY -->
+<section class="section dark" id="gallery">
+<div class="sec-inner">
+  <span class="sec-label" style="color:var(--gold);">The Complete Collection</span>
+  <div class="sec-header-row" style="border-bottom-color:rgba(255,255,255,0.1);">
+    <div>
+      <h2 class="sec-title light">Our <em>Gallery</em></h2>
+      <p class="sec-desc" style="color:rgba(255,255,255,0.5);margin-bottom:0;">Twenty original works available to purchase. Each piece is hand-selected — perfect as a singular statement or grouped as a gallery wall.</p>
+    </div>
+  </div>
+  <div class="mosaic"><div class="mosaic-item" onclick="openLb(0)"><img src="img/gond-01.jpeg" alt="Gond Fish — Interwoven Brilliance" loading="lazy"><div class="mosaic-overlay"><div class="mosaic-txt">Gond Fish — Interwoven Brilliance</div></div></div><div class="mosaic-item" onclick="openLb(1)"><img src="img/gond-02.jpeg" alt="Gond Cattle — The Forest Gathering" loading="lazy"><div class="mosaic-overlay"><div class="mosaic-txt">Gond Cattle — The Forest Gathering</div></div></div><div class="mosaic-item" onclick="openLb(2)"><img src="img/gond-03.jpeg" alt="Tree of Blue Birds" loading="lazy"><div class="mosaic-overlay"><div class="mosaic-txt">Tree of Blue Birds</div></div></div><div class="mosaic-item" onclick="openLb(3)"><img src="img/gond-04.jpeg" alt="Deer & Bird Under the Tree" loading="lazy"><div class="mosaic-overlay"><div class="mosaic-txt">Deer & Bird Under the Tree</div></div></div><div class="mosaic-item" onclick="openLb(4)"><img src="img/gond-05.jpeg" alt="Four Birds Growing Trees" loading="lazy"><div class="mosaic-overlay"><div class="mosaic-txt">Four Birds Growing Trees</div></div></div><div class="mosaic-item" onclick="openLb(5)"><img src="img/gond-06.jpeg" alt="The Magnificent Gond Peacock" loading="lazy"><div class="mosaic-overlay"><div class="mosaic-txt">The Magnificent Gond Peacock</div></div></div><div class="mosaic-item" onclick="openLb(6)"><img src="img/gond-07.jpeg" alt="Tiger, Fish & Deer" loading="lazy"><div class="mosaic-overlay"><div class="mosaic-txt">Tiger, Fish & Deer</div></div></div><div class="mosaic-item" onclick="openLb(7)"><img src="img/gond-08.jpeg" alt="Bear with a Fish" loading="lazy"><div class="mosaic-overlay"><div class="mosaic-txt">Bear with a Fish</div></div></div><div class="mosaic-item" onclick="openLb(8)"><img src="img/gond-09.jpeg" alt="Flowering Deer" loading="lazy"><div class="mosaic-overlay"><div class="mosaic-txt">Flowering Deer</div></div></div><div class="mosaic-item" onclick="openLb(9)"><img src="img/gond-10.jpeg" alt="Elephant & the Tree of Life" loading="lazy"><div class="mosaic-overlay"><div class="mosaic-txt">Elephant & the Tree of Life</div></div></div><div class="mosaic-item" onclick="openLb(10)"><img src="img/gond-11.jpeg" alt="Five Birds on a Gond Tree" loading="lazy"><div class="mosaic-overlay"><div class="mosaic-txt">Five Birds on a Gond Tree</div></div></div><div class="mosaic-item" onclick="openLb(11)"><img src="img/gond-12.jpeg" alt="Blue Fan Bird" loading="lazy"><div class="mosaic-overlay"><div class="mosaic-txt">Blue Fan Bird</div></div></div><div class="mosaic-item" onclick="openLb(12)"><img src="img/gond-13.jpeg" alt="Two Elephants Face to Face" loading="lazy"><div class="mosaic-overlay"><div class="mosaic-txt">Two Elephants Face to Face</div></div></div><div class="mosaic-item" onclick="openLb(13)"><img src="img/gond-14.jpeg" alt="Two Deer — Yin & Yang" loading="lazy"><div class="mosaic-overlay"><div class="mosaic-txt">Two Deer — Yin & Yang</div></div></div><div class="mosaic-item" onclick="openLb(14)"><img src="img/gond-15.jpeg" alt="Spiral Bird & the Tree" loading="lazy"><div class="mosaic-overlay"><div class="mosaic-txt">Spiral Bird & the Tree</div></div></div><div class="mosaic-item" onclick="openLb(15)"><img src="img/gond-16.jpeg" alt="Tiger Spirit on Green" loading="lazy"><div class="mosaic-overlay"><div class="mosaic-txt">Tiger Spirit on Green</div></div></div><div class="mosaic-item" onclick="openLb(16)"><img src="img/gond-17.jpeg" alt="Blue Bird on Crimson" loading="lazy"><div class="mosaic-overlay"><div class="mosaic-txt">Blue Bird on Crimson</div></div></div><div class="mosaic-item" onclick="openLb(17)"><img src="img/gond-18.jpeg" alt="The Blue Elephant" loading="lazy"><div class="mosaic-overlay"><div class="mosaic-txt">The Blue Elephant</div></div></div><div class="mosaic-item" onclick="openLb(18)"><img src="img/gond-19.jpeg" alt="The Sacred Bull" loading="lazy"><div class="mosaic-overlay"><div class="mosaic-txt">The Sacred Bull</div></div></div><div class="mosaic-item" onclick="openLb(19)"><img src="img/gond-20.jpeg" alt="Blue Deer with Birds" loading="lazy"><div class="mosaic-overlay"><div class="mosaic-txt">Blue Deer with Birds</div></div></div></div>
+</div>
+</section>
+
+<!-- INSPIRED HOMES -->
+<section class="section" id="inspired-homes">
+<div class="sec-inner">
+  <span class="sec-label">Ideas &amp; Inspiration</span>
+  <h2 class="sec-title">Inspired <em>Homes</em></h2>
+  <p class="sec-desc">See how our artworks transform real spaces — from kitchens and living rooms to bedrooms, offices, and bathrooms.</p>
+
+  <div class="room-heading">Living Rooms</div>
+  <div class="scene-card reveal"><div class="scene-wrap"><img class="room-photo" src="img/living-room-1.png" alt="The Blue Elephant anchors a warm neutral living room" loading="lazy" style="aspect-ratio:1086/1448;"></div><div class="scene-caption"><div><div class="cap-title">The Blue Elephant anchors a warm neutral living room</div><div class="cap-sub">Gond painting · Framed statement piece · Above sofa</div></div><span class="cap-tag">Living Room</span></div></div>
+  <div class="two-up"><div class="scene-card reveal"><div class="scene-wrap"><img class="room-photo" src="img/living-room-2.png" alt="A dark-framed folk piece beside a warm sideboard" loading="lazy" style="aspect-ratio:1122/1402;"></div><div class="scene-caption"><div><div class="cap-title">A dark-framed folk piece beside a warm sideboard</div><div class="cap-sub">Folk painting · Portrait</div></div><span class="cap-tag">Living Room</span></div></div><div class="scene-card reveal"><div class="scene-wrap"><img class="room-photo" src="img/living-room-3.png" alt="Kalighat figures bring mythological warmth to a classic nook" loading="lazy" style="aspect-ratio:1122/1402;"></div><div class="scene-caption"><div><div class="cap-title">Kalighat figures bring mythological warmth to a classic nook</div><div class="cap-sub">Folk painting · Portrait</div></div><span class="cap-tag">Living Room</span></div></div></div>
+
+  <div class="room-heading">Dining Rooms</div>
+  <div class="two-up"><div class="scene-card reveal"><div class="scene-wrap"><img class="room-photo" src="img/dining-room-1.png" alt="A teal bird amid foliage above an elegant dining sideboard" loading="lazy" style="aspect-ratio:1402/1122;"></div><div class="scene-caption"><div><div class="cap-title">A teal bird amid foliage above an elegant dining sideboard</div><div class="cap-sub">Folk painting · Landscape</div></div><span class="cap-tag">Dining Room</span></div></div><div class="scene-card reveal"><div class="scene-wrap"><img class="room-photo" src="img/dining-room-2.png" alt="A Pattachitra village scene transforms a rustic dining wall" loading="lazy" style="aspect-ratio:1402/1122;"></div><div class="scene-caption"><div><div class="cap-title">A Pattachitra village scene transforms a rustic dining wall</div><div class="cap-sub">Folk painting · Landscape</div></div><span class="cap-tag">Dining Room</span></div></div></div>
+
+  <div class="room-heading">Kitchens</div>
+  <div class="three-up"><div class="scene-card reveal"><div class="scene-wrap"><img class="room-photo" src="img/kitchen-1.png" alt="Gond peacocks bring playful energy to a sage-green kitchen" loading="lazy" style="aspect-ratio:1402/1122;"></div><div class="scene-caption"><div><div class="cap-title">Gond peacocks bring playful energy to a sage-green kitchen</div><div class="cap-sub">Folk painting · Landscape</div></div><span class="cap-tag">Kitchen</span></div></div><div class="scene-card reveal"><div class="scene-wrap"><img class="room-photo" src="img/kitchen-2.png" alt="Cows under a tree feel at home in a warm timber kitchen" loading="lazy" style="aspect-ratio:1402/1122;"></div><div class="scene-caption"><div><div class="cap-title">Cows under a tree feel at home in a warm timber kitchen</div><div class="cap-sub">Folk painting · Landscape</div></div><span class="cap-tag">Kitchen</span></div></div><div class="scene-card reveal"><div class="scene-wrap"><img class="room-photo" src="img/kitchen-3.png" alt="Three vivid elephants spark joy in a bright family kitchen" loading="lazy" style="aspect-ratio:1122/1402;"></div><div class="scene-caption"><div><div class="cap-title">Three vivid elephants spark joy in a bright family kitchen</div><div class="cap-sub">Folk painting · Portrait</div></div><span class="cap-tag">Kitchen</span></div></div></div>
+
+  <div class="room-heading">Entryways</div>
+  <div class="scene-card reveal"><div class="scene-wrap"><img class="room-photo" src="img/entryway.png" alt="A tall Gond tree painting greets guests at the front door" loading="lazy" style="aspect-ratio:1122/1402;"></div><div class="scene-caption"><div><div class="cap-title">A tall Gond tree painting greets guests at the front door</div><div class="cap-sub">Gond painting · Portrait</div></div><span class="cap-tag">Entryway</span></div></div>
+
+  <div class="room-heading">Bedrooms</div>
+  <div class="three-up"><div class="scene-card reveal"><div class="scene-wrap"><img class="room-photo" src="img/bedroom-1.png" alt="Krishna and cows — a devotional Pattachitra above the dresser" loading="lazy" style="aspect-ratio:1122/1402;"></div><div class="scene-caption"><div><div class="cap-title">Krishna and cows — a devotional Pattachitra above the dresser</div><div class="cap-sub">Folk painting · Portrait</div></div><span class="cap-tag">Bedroom</span></div></div><div class="scene-card reveal"><div class="scene-wrap"><img class="room-photo" src="img/bedroom-2.png" alt="Yashoda and Krishna — a tender folk scene beside a warm bed" loading="lazy" style="aspect-ratio:1122/1402;"></div><div class="scene-caption"><div><div class="cap-title">Yashoda and Krishna — a tender folk scene beside a warm bed</div><div class="cap-sub">Folk painting · Portrait</div></div><span class="cap-tag">Bedroom</span></div></div><div class="scene-card reveal"><div class="scene-wrap"><img class="room-photo" src="img/bedroom-3.png" alt="A vibrant Gond painting adds life to a calm neutral bedroom" loading="lazy" style="aspect-ratio:1402/1122;"></div><div class="scene-caption"><div><div class="cap-title">A vibrant Gond painting adds life to a calm neutral bedroom</div><div class="cap-sub">Gond painting · Landscape</div></div><span class="cap-tag">Bedroom</span></div></div></div>
+
+  <div class="room-heading">Home Offices</div>
+  <div class="two-up"><div class="scene-card reveal"><div class="scene-wrap"><img class="room-photo" src="img/office-1.png" alt="A Gond tree of birds brings creativity to a traditional study" loading="lazy" style="aspect-ratio:1402/1122;"></div><div class="scene-caption"><div><div class="cap-title">A Gond tree of birds brings creativity to a traditional study</div><div class="cap-sub">Gond painting · Landscape</div></div><span class="cap-tag">Home Office</span></div></div><div class="scene-card reveal"><div class="scene-wrap"><img class="room-photo" src="img/office-2.png" alt="Bold Pattachitra figures command a sleek modern office" loading="lazy" style="aspect-ratio:1402/1122;"></div><div class="scene-caption"><div><div class="cap-title">Bold Pattachitra figures command a sleek modern office</div><div class="cap-sub">Folk painting · Landscape</div></div><span class="cap-tag">Home Office</span></div></div></div>
+
+  <div class="room-heading">Bathrooms</div>
+  <div class="three-up"><div class="scene-card reveal"><div class="scene-wrap"><img class="room-photo" src="img/bathroom-1.png" alt="A Pattachitra garden scene above the toilet — unexpected and utterly delightful" loading="lazy" style="aspect-ratio:1402/1122;"></div><div class="scene-caption"><div><div class="cap-title">A Pattachitra garden scene above the toilet — unexpected and utterly delightful</div><div class="cap-sub">Folk painting · Landscape</div></div><span class="cap-tag">Bathroom</span></div></div><div class="scene-card reveal"><div class="scene-wrap"><img class="room-photo" src="img/bathroom-2.png" alt="A Gond animal painting soaks in the light above a freestanding bath" loading="lazy" style="aspect-ratio:1122/1402;"></div><div class="scene-caption"><div><div class="cap-title">A Gond animal painting soaks in the light above a freestanding bath</div><div class="cap-sub">Gond painting · Portrait</div></div><span class="cap-tag">Bathroom</span></div></div><div class="scene-card reveal"><div class="scene-wrap"><img class="room-photo" src="img/bathroom-3.png" alt="Colourful Gond deer and birds make bath time feel like a forest ritual" loading="lazy" style="aspect-ratio:1122/1402;"></div><div class="scene-caption"><div><div class="cap-title">Colourful Gond deer and birds make bath time feel like a forest ritual</div><div class="cap-sub">Gond painting · Portrait</div></div><span class="cap-tag">Bathroom</span></div></div></div>
+
+</div>
+</section>
+
+<!-- ART GUIDE -->
+<section class="section alt" id="art-guide">
+<div class="sec-inner">
+  <span class="sec-label">What We Carry</span>
+  <h2 class="sec-title">Art <em>Guide</em></h2>
+  <p class="sec-desc">From centuries-old Indian folk traditions to bold contemporary expression — explore the art forms you'll find at Artful Barn.</p>
+  <div class="art-guide-grid"><div class="art-guide-card reveal"><div class="art-guide-img-wrap"><img src="img/art-guide-gond.png" alt="Gond Art infographic" loading="lazy"></div></div><div class="art-guide-card reveal"><div class="art-guide-img-wrap"><img src="img/art-guide-madhubani.png" alt="Madhubani Art infographic" loading="lazy"></div></div><div class="art-guide-card reveal"><div class="art-guide-img-wrap"><img src="img/art-guide-patachitra.png" alt="Patachitra Art infographic" loading="lazy"></div></div><div class="art-guide-card reveal"><div class="art-guide-img-wrap"><img src="img/art-guide-kalighat.png" alt="Kalighat Art infographic" loading="lazy"></div></div><div class="art-guide-card reveal"><div class="art-guide-img-wrap"><img src="img/art-guide-kalamkari.png" alt="Kalamkari Art infographic" loading="lazy"></div></div><div class="art-guide-card reveal"><div class="art-guide-img-wrap"><img src="img/art-guide-warli.png" alt="Warli Art infographic" loading="lazy"></div></div></div>
+</div>
+</section>
+
+<!-- ABOUT -->
+<section class="section" id="about">
+<div class="sec-inner">
+  <span class="sec-label">Our Story</span>
+  <h2 class="sec-title">About <em>Artful Barn</em></h2>
+  <p class="sec-desc">A one-of-a-kind creative space tucked in Springboro, Ohio — where art, nature, and community come together.</p>
+  <div class="about-grid reveal">
+    <div>
+      <div class="about-img-cell" style="margin-bottom:2px;"><img src="img/barn-sunset.jpg" alt="The Barn" loading="lazy"><div class="about-img-label">The Artful Barn — Springboro, Ohio</div></div>
+      <div class="about-img-cell"><img src="img/peacock-sanctuary.jpg" alt="Peacock Sanctuary" loading="lazy"><div class="about-img-label">Our resident peacocks</div></div>
+    </div>
+    <div class="about-text">
+      <span class="sec-label">Est. 2024 · Springboro, Ohio</span>
+      <h3 class="sec-title" style="font-size:clamp(24px,2.5vw,36px);">Art should live<br><em>where life does</em></h3>
+      <p>Artful Barn started with a simple idea: that beautiful, meaningful art should be accessible to everyone — not locked away in galleries that feel intimidating or far away. We wanted to create a space that felt like home.</p>
+      <p>Our converted barn sits on a property with a fenced peacock sanctuary, where the colours of folk art and the colours of nature feel completely in conversation with each other. Come for a class, a gallery visit, or just to see the peacocks.</p>
+      <p>Artful Barn is run by a team of women who believe art changes how we see our homes, our communities, and ourselves. Every piece we carry has a story worth knowing.</p>
+    </div>
+  </div>
+  <div class="team-grid reveal">
+    <div class="team-card"><div class="team-avatar">👩‍🎨</div><div class="team-name">Founder &amp; Director</div><div class="team-role">Gallery &amp; Curation</div></div>
+    <div class="team-card"><div class="team-avatar">🎨</div><div class="team-name">Studio Lead</div><div class="team-role">Workshops &amp; Classes</div></div>
+    <div class="team-card"><div class="team-avatar">🦚</div><div class="team-name">Community Manager</div><div class="team-role">Events &amp; Outreach</div></div>
+  </div>
+</div>
+</section>
+
+<!-- CONTACT -->
+<section class="section alt" id="contact">
+<div class="sec-inner">
+  <span class="sec-label">Get in Touch</span>
+  <h2 class="sec-title">Contact <em>Us</em></h2>
+  <p class="sec-desc">Questions about a class, a piece of art, or just want to say hello? We'd love to hear from you.</p>
+  <div class="contact-grid reveal">
+    <div class="contact-info">
+      <div class="contact-info-item"><div class="contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><div class="contact-label">Address</div><div class="contact-value">647 East State Route 73<br>Springboro, OH 45066</div></div></div>
+      <div class="contact-info-item"><div class="contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.64 3.4 2 2 0 0 1 3.6 1.25h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6.06 6.06l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.5 16.3z"/></svg></div><div><div class="contact-label">Phone</div><div class="contact-value"><a href="tel:+15133422276">(513) 342-BARN</a></div></div></div>
+      <div class="contact-info-item"><div class="contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><div class="contact-label">Email</div><div class="contact-value"><a href="mailto:info@artfulbarn.com">info@artfulbarn.com</a></div></div></div>
+      <div class="contact-info-item"><div class="contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div class="contact-label">Hours</div><div class="contact-value">Tuesday – Saturday: 10am – 5pm<br>Sunday: 12pm – 4pm<br>Monday: Closed</div></div></div>
+    </div>
+    <div class="contact-form">
+      <div class="form-row"><div class="form-group"><label>First Name</label><input type="text" placeholder="Jane"></div><div class="form-group"><label>Last Name</label><input type="text" placeholder="Smith"></div></div>
+      <div class="form-group"><label>Email Address</label><input type="email" placeholder="jane@example.com"></div>
+      <div class="form-group"><label>Phone (optional)</label><input type="tel" placeholder="(555) 123-4567"></div>
+      <div class="form-group"><label>I'm interested in...</label><select><option value="">Select one</option><option>Purchasing artwork</option><option>Booking a class or workshop</option><option>Gallery visit</option><option>Hosting a private event</option><option>General enquiry</option></select></div>
+      <div class="form-group"><label>Message</label><textarea placeholder="Tell us a little about what you're looking for..."></textarea></div>
+      <button class="btn-gold" style="width:100%;justify-content:center;">Send Message &rarr;</button>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-logo"><img src="img/logo.png" alt="Artful Barn"><p class="footer-about">A gallery, studio &amp; peacock sanctuary in Springboro, Ohio. All creatives welcome — whatever form your art takes.</p></div>
+      <div class="footer-col"><h5>Explore</h5><ul><li><a href="#events">Events</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#inspired-homes">Inspired Homes</a></li><li><a href="#art-guide">Art Guide</a></li><li><a href="#about">About Us</a></li></ul></div>
+      <div class="footer-col"><h5>Visit Us</h5><ul><li><a href="#contact">647 E. State Route 73</a></li><li><a href="#contact">Springboro, OH 45066</a></li><li><a href="tel:+15133422276">(513) 342-BARN</a></li><li><a href="mailto:info@artfulbarn.com">info@artfulbarn.com</a></li><li><a href="#contact">Book a Class</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>&copy; 2026 Artful Barn. All rights reserved.</span><div style="display:flex;gap:20px;"><a href="#">Privacy Policy</a><a href="#">Terms</a></div></div>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lb" id="lb" onclick="if(event.target===this)closeLb()">
+  <button class="lb-x" onclick="closeLb()">&#x2715;</button>
+  <button class="lb-arr" id="lbPrev" onclick="lbNav(-1)">&#8249;</button>
+  <button class="lb-arr" id="lbNext" onclick="lbNav(1)">&#8250;</button>
+  <div class="lb-inner"><img class="lb-img" id="lbImg" src="" alt=""><div class="lb-cap" id="lbCap"></div><div class="lb-sub">Click &#8592; &#8594; to browse all works</div></div>
+</div>
+
+<script>
+const IMGS=["img/gond-01.jpeg","img/gond-02.jpeg","img/gond-03.jpeg","img/gond-04.jpeg","img/gond-05.jpeg","img/gond-06.jpeg","img/gond-07.jpeg","img/gond-08.jpeg","img/gond-09.jpeg","img/gond-10.jpeg","img/gond-11.jpeg","img/gond-12.jpeg","img/gond-13.jpeg","img/gond-14.jpeg","img/gond-15.jpeg","img/gond-16.jpeg","img/gond-17.jpeg","img/gond-18.jpeg","img/gond-19.jpeg","img/gond-20.jpeg"];
+const TITLES=["Gond Fish \u2014 Interwoven Brilliance", "Gond Cattle \u2014 The Forest Gathering", "Tree of Blue Birds", "Deer & Bird Under the Tree", "Four Birds Growing Trees", "The Magnificent Gond Peacock", "Tiger, Fish & Deer", "Bear with a Fish", "Flowering Deer", "Elephant & the Tree of Life", "Five Birds on a Gond Tree", "Blue Fan Bird", "Two Elephants Face to Face", "Two Deer \u2014 Yin & Yang", "Spiral Bird & the Tree", "Tiger Spirit on Green", "Blue Bird on Crimson", "The Blue Elephant", "The Sacred Bull", "Blue Deer with Birds"];
+let cur=0;
+function openLb(i){cur=i;document.getElementById('lbImg').src=IMGS[i];document.getElementById('lbCap').textContent=TITLES[i];document.getElementById('lb').classList.add('open');document.body.style.overflow='hidden';}
+function closeLb(){document.getElementById('lb').classList.remove('open');document.body.style.overflow='';}
+function lbNav(d){openLb((cur+d+IMGS.length)%IMGS.length);}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLb();if(e.key==='ArrowRight')lbNav(1);if(e.key==='ArrowLeft')lbNav(-1);});
+const _h=document.getElementById('hamburger'),_m=document.getElementById('mobileMenu'),_o=document.getElementById('menuOverlay');
+function openM(){_h.classList.add('open');_m.classList.add('open');_o.classList.add('open');document.body.style.overflow='hidden';}
+function closeM(){_h.classList.remove('open');_m.classList.remove('open');_o.classList.remove('open');document.body.style.overflow='';}
+_h.addEventListener('click',()=>_h.classList.contains('open')?closeM():openM());
+_o.addEventListener('click',closeM);
+_m.querySelectorAll('a').forEach(l=>l.addEventListener('click',closeM));
+window.addEventListener('resize',()=>{if(window.innerWidth>768)closeM();});
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const id=a.getAttribute('href').slice(1);
+    if(!id)return;
+    const target=document.getElementById(id);
+    if(!target)return;
+    e.preventDefault();
+    const top=target.getBoundingClientRect().top+window.scrollY-68;
+    window.scrollTo({top,behavior:'smooth'});
+  });
+});
+const sections=['events','gallery','inspired-homes','art-guide','about','contact'];
+const navAs=document.querySelectorAll('.nav-links a[href^="#"]');
+function updateActive(){
+  const y=window.scrollY+68+80;
+  let active='';
+  sections.forEach(id=>{const el=document.getElementById(id);if(el&&el.offsetTop<=y)active=id;});
+  navAs.forEach(a=>{const t=a.getAttribute('href').replace('#','');a.classList.toggle('nav-active',t===active);});
+}
+window.addEventListener('scroll',updateActive,{passive:true});
+updateActive();
+window.addEventListener('scroll',()=>{document.getElementById('mainNav').classList.toggle('scrolled',window.scrollY>10);},{passive:true});
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.05});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
